@@ -75,6 +75,19 @@ class WorkoutListFragment : Fragment() {
         inflater.inflate(R.menu.fragment_workout_list, menu)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        return when (item.itemId){
+            R.id.new_workout -> {
+                val workout = Workout()
+                workoutListViewModel.addWorkout(workout)
+                callbacks?.onWorkoutSelected(workout.id)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun updateUI(workouts:List<Workout>) {
         adapter = WorkoutAdapter(workouts)
         workoutRecyclerView.adapter = adapter
