@@ -17,25 +17,21 @@ private const val TAG = "WorkoutListFragment"
 
 class WorkoutListFragment : Fragment() {
 
-    /** callback interface */
+
+    private var callbacks: Callbacks? = null
+    private lateinit var workoutRecyclerView: RecyclerView
+    private var adapter: WorkoutAdapter? = WorkoutAdapter(emptyList())
+    private val workoutListViewModel: WorkoutListViewModel by viewModels()
 
     interface Callbacks {
         fun onWorkoutSelected(workoutID: UUID)
     }
 
-    private var callbacks: Callbacks? = null
-
-
-    private lateinit var workoutRecyclerView: RecyclerView
-    private var adapter: WorkoutAdapter? = WorkoutAdapter(emptyList())
-
-    private val workoutListViewModel: WorkoutListViewModel by viewModels()
-
-
     override fun onAttach(context: Context){
         super.onAttach(context)
         callbacks = context as Callbacks?
     }
+
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -56,6 +52,9 @@ class WorkoutListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState)
+    }
+    override fun onStart() {
+        super.onStart()
         workoutListViewModel.workoutListLiveData.observe(
             viewLifecycleOwner,
             Observer { workouts -> workouts?.let{
@@ -89,8 +88,13 @@ class WorkoutListFragment : Fragment() {
     }
 
     private fun updateUI(workouts:List<Workout>) {
-        adapter = WorkoutAdapter(workouts)
+        adapter?.let {
+           it.workouts = workouts
+        } ?: run{
+            adapter=WorkoutAdapter(workouts)
+        }
         workoutRecyclerView.adapter = adapter
+
     }
     private inner class WorkoutHolder(view: View)
         :RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -99,7 +103,10 @@ class WorkoutListFragment : Fragment() {
 
             private val titleTextView: TextView = itemView.findViewById(R.id.workout_title)
             private val locationTextView: TextView = itemView.findViewById(R.id.workout_location)
+            private val starttimeTextView: TextView = itemView.findViewById(R.id.start_time)
+            private val endtimeTextView: TextView = itemView.findViewById(R.id.end_time)
             private val dateTextView: TextView = itemView.findViewById(R.id.workout_date)
+
 
         init {
             itemView.setOnClickListener(this)
@@ -110,6 +117,8 @@ class WorkoutListFragment : Fragment() {
             titleTextView.text = this.workout.title
             locationTextView.text = this.workout.location
             dateTextView.text = this.workout.date.toString()
+            starttimeTextView.text = this.workout.starttime
+            endtimeTextView.text = this.workout.endttime
         }
 
         override fun onClick(v: View){
@@ -118,16 +127,18 @@ class WorkoutListFragment : Fragment() {
     }
     private inner class WorkoutAdapter(var workouts: List<Workout>)
         : RecyclerView.Adapter<WorkoutHolder>() {
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : WorkoutHolder {
                 val view = layoutInflater.inflate(R.layout.list_item_workout, parent, false)
                 return WorkoutHolder(view)
             }
-            override fun getItemCount() = workouts.size
+
         override fun onBindViewHolder(holder: WorkoutHolder, position: Int) {
             val workout = workouts[position]
             holder.bind(workout)
         }
+        override fun getItemCount() = workouts.size
         }
 
     companion object {

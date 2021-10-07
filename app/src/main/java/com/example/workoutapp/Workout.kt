@@ -9,5 +9,7 @@ import java.util.Date
 data class Workout(@PrimaryKey val id: UUID = UUID.randomUUID(),
                    var title: String = "",
                    var location: String = "",
+                   var starttime: String = "",
+                   var endttime: String = "",
                    var date: Date = Date(),
                    var isGroup: Boolean = false)

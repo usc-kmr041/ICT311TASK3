@@ -25,6 +25,11 @@ class WorkoutFragment : Fragment() {
     private lateinit var titleField: EditText
     private lateinit var dateButton: Button
     private lateinit var groupCheckbox: CheckBox
+    private lateinit var locationField: EditText
+    private lateinit var starttimeField: EditText
+    private lateinit var endtimeField: EditText
+
+
 
     private val workoutDetailViewModel: WorkoutDetailViewModel by viewModels()
 
@@ -45,6 +50,9 @@ class WorkoutFragment : Fragment() {
         titleField = view.findViewById(R.id.workout_title) as EditText
         dateButton = view.findViewById(R.id.workout_date) as Button
         groupCheckbox = view.findViewById(R.id.workout_group) as CheckBox
+        locationField = view.findViewById(R.id.workout_location) as EditText
+        starttimeField = view.findViewById(R.id.start_time) as EditText
+        endtimeField = view.findViewById(R.id.end_time) as EditText
 
             dateButton.apply {
                 text = workout.date.toString()
@@ -94,6 +102,88 @@ class WorkoutFragment : Fragment() {
         }
 
         titleField.addTextChangedListener(titleWatcher)
+        val locationWatcher = object : TextWatcher {
+
+            override fun beforeTextChanged(
+                sequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int,
+            ){
+                //blankspace//
+            }
+
+            override fun onTextChanged(
+                sequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int,
+            ){
+                workout.location = sequence.toString()
+            }
+
+            override fun afterTextChanged(sequence: Editable?) {
+                //blank space//
+            }
+        }
+
+        locationField.addTextChangedListener(locationWatcher)
+
+        val starttimeWatcher = object : TextWatcher {
+
+            override fun beforeTextChanged(
+                sequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int,
+            ){
+                //blankspace//
+            }
+
+            override fun onTextChanged(
+                sequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int,
+            ){
+                workout.starttime = sequence.toString()
+            }
+
+            override fun afterTextChanged(sequence: Editable?) {
+                //blank space//
+            }
+        }
+
+        starttimeField.addTextChangedListener(starttimeWatcher)
+
+        val endtimeWatcher = object : TextWatcher {
+
+            override fun beforeTextChanged(
+                sequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int,
+            ){
+                //blankspace//
+            }
+
+            override fun onTextChanged(
+                sequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int,
+            ){
+                workout.endttime = sequence.toString()
+            }
+
+            override fun afterTextChanged(sequence: Editable?) {
+                //blank space//
+            }
+        }
+
+        endtimeField.addTextChangedListener(endtimeWatcher)
+
+
 
         groupCheckbox.apply {
             setOnCheckedChangeListener {_, isChecked -> workout.isGroup = isChecked
@@ -108,6 +198,9 @@ class WorkoutFragment : Fragment() {
 
     private fun updateUI(){
         titleField.setText(workout.title)
+        locationField.setText(workout.location)
+        starttimeField.setText(workout.starttime)
+        endtimeField.setText(workout.endttime)
         dateButton.text = workout.date.toString()
         groupCheckbox.apply {
             isChecked = workout.isGroup

@@ -1,8 +1,11 @@
     <resources>
     <string name="app_name">WorkoutApp</string>
         <string name="workout_title_hint">Enter a title for the workout.</string>
+        <string name="workout_location_hint">Enter location here.</string>
         <string name="workout_title_label">Title</string>
-        <string name="workout_details_label">Details</string>
+        <string name="workout_details_label">Date</string>
+        <string name="start_time">Start Time</string>
+        <string name="end_time">End Time</string>
         <string name="workout_group_label">Group Workout</string>
         <string name="new_workout">New Workout</string>
 </resources>
