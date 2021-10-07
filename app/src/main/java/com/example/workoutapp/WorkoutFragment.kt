@@ -31,7 +31,6 @@ class WorkoutFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         workout = Workout()
-
         val workoutId: UUID = arguments?.getSerializable(ARG_WORKOUT_ID) as UUID
         workoutDetailViewModel.loadWorkout(workoutId)
     }
@@ -46,6 +45,7 @@ class WorkoutFragment : Fragment() {
         titleField = view.findViewById(R.id.workout_title) as EditText
         dateButton = view.findViewById(R.id.workout_date) as Button
         groupCheckbox = view.findViewById(R.id.workout_group) as CheckBox
+
             dateButton.apply {
                 text = workout.date.toString()
                 isEnabled = false

@@ -12,7 +12,8 @@ class WorkoutDetailViewModel(): ViewModel() {
     private val workoutIdLiveData = MutableLiveData<UUID>()
 
     var workoutLiveData: LiveData<Workout?> =
-        Transformations.switchMap(workoutIdLiveData) { workoutId -> workoutRepository.getWorkout(workoutId)
+        Transformations.switchMap(workoutIdLiveData) { workoutId ->
+            workoutRepository.getWorkout(workoutId)
         }
     fun loadWorkout(workoutId: UUID){
         workoutIdLiveData.value = workoutId
