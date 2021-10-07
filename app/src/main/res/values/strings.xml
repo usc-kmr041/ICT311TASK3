@@ -4,4 +4,5 @@
         <string name="workout_title_label">Title</string>
         <string name="workout_details_label">Details</string>
         <string name="workout_group_label">Group Workout</string>
+        <string name="new_workout">New Workout</string>
 </resources>

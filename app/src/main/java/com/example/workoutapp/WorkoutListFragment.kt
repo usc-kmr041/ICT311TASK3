@@ -1,10 +1,9 @@
 package com.example.workoutapp
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -12,15 +11,35 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
 private const val TAG = "WorkoutListFragment"
 
 class WorkoutListFragment : Fragment() {
 
+    /** callback interface */
+
+    interface Callbacks {
+        fun onWorkoutSelected(workoutID: UUID)
+    }
+
+    private var callbacks: Callbacks? = null
+
+
     private lateinit var workoutRecyclerView: RecyclerView
     private var adapter: WorkoutAdapter? = WorkoutAdapter(emptyList())
 
     private val workoutListViewModel: WorkoutListViewModel by viewModels()
+
+
+    override fun onAttach(context: Context){
+        super.onAttach(context)
+        callbacks = context as Callbacks?
+    }
+    override fun onCreate(savedInstanceState: Bundle?){
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
 
     override fun onCreateView(
@@ -44,6 +63,16 @@ class WorkoutListFragment : Fragment() {
                 updateUI(workouts)
             } }
         )
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_workout_list, menu)
     }
 
     private fun updateUI(workouts:List<Workout>) {
@@ -71,7 +100,7 @@ class WorkoutListFragment : Fragment() {
         }
 
         override fun onClick(v: View){
-            Toast.makeText(context, "${workout.title} pressed!", Toast.LENGTH_SHORT).show()
+            callbacks?.onWorkoutSelected(workout.id)
         }
     }
     private inner class WorkoutAdapter(var workouts: List<Workout>)

@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.example.workoutapp.database.WorkoutDatabase
 import java.lang.IllegalStateException
 import java.util.*
+import java.util.concurrent.Executors
 
 private const val DATABASE_NAME = "workout-database"
 
@@ -18,10 +19,22 @@ class WorkoutRepository private constructor(context: Context) {
     ).build()
 
     private val workoutDao = database.workoutDao()
+    private val executor = Executors.newSingleThreadExecutor()
 
     fun getWorkouts(): LiveData<List<Workout>> = workoutDao.getWorkouts()
 
     fun getWorkout(id: UUID): LiveData<Workout?> = workoutDao.getWorkout(id)
+
+    fun updateWorkout(workout : Workout){
+        executor.execute{
+            workoutDao.updateWorkout(workout)
+        }
+    }
+    fun addWorkout(workout: Workout){
+        executor.execute{
+            workoutDao.addWorkout(workout)
+        }
+    }
 
 
     companion object {
