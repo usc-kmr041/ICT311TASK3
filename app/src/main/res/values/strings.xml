@@ -1,0 +1,7 @@
+    <resources>
+    <string name="app_name">WorkoutApp</string>
+        <string name="workout_title_hint">Enter a title for the workout.</string>
+        <string name="workout_title_label">Title</string>
+        <string name="workout_details_label">Details</string>
+        <string name="workout_group_label">Group Workout</string>
+</resources>
