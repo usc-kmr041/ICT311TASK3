@@ -9,7 +9,15 @@
         android:id="@+id/workout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Workout Title"/>
+        android:text="Workout Title"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/workout_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Workout Location"/>
 
     <TextView
         android:id="@+id/workout_date"
