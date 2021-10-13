@@ -8,17 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.DatePicker
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.workoutapp.R
-import com.example.workoutapp.Workout
-import com.example.workoutapp.WorkoutDetailViewModel
-import com.example.workoutapp.WorkoutListViewModel
+import com.example.workoutapp.*
 import java.util.*
 
 private const val TAG = "Workout Fragment"
 private const val ARG_WORKOUT_ID = "workout_id"
+private const val DIALOG_DATE = "DialogDate"
 
 class WorkoutFragment : Fragment() {
     private lateinit var workout: Workout
@@ -54,10 +53,6 @@ class WorkoutFragment : Fragment() {
         starttimeField = view.findViewById(R.id.start_time) as EditText
         endtimeField = view.findViewById(R.id.end_time) as EditText
 
-            dateButton.apply {
-                text = workout.date.toString()
-                isEnabled = false
-            }
         return view
     }
 
@@ -187,6 +182,12 @@ class WorkoutFragment : Fragment() {
 
         groupCheckbox.apply {
             setOnCheckedChangeListener {_, isChecked -> workout.isGroup = isChecked
+            }
+        }
+
+        dateButton.setOnClickListener{
+            DatePickerFragment().apply{
+                show(this@WorkoutFragment.requireFragmentManager(), DIALOG_DATE)
             }
         }
     }
