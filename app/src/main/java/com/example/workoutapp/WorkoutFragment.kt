@@ -18,8 +18,9 @@ import java.util.*
 private const val TAG = "Workout Fragment"
 private const val ARG_WORKOUT_ID = "workout_id"
 private const val DIALOG_DATE = "DialogDate"
+private const val REQUEST_DATE = 0
 
-class WorkoutFragment : Fragment() {
+class WorkoutFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var workout: Workout
     private lateinit var titleField: EditText
     private lateinit var dateButton: Button
@@ -186,7 +187,8 @@ class WorkoutFragment : Fragment() {
         }
 
         dateButton.setOnClickListener{
-            DatePickerFragment().apply{
+            DatePickerFragment.newInstance(workout.date).apply{
+                setTargetFragment(this@WorkoutFragment, REQUEST_DATE)
                 show(this@WorkoutFragment.requireFragmentManager(), DIALOG_DATE)
             }
         }
@@ -196,6 +198,12 @@ class WorkoutFragment : Fragment() {
         super.onStop()
         workoutDetailViewModel.saveWorkout(workout)
     }
+
+    override fun onDateSelected(date:Date){
+        workout.date = date
+        updateUI()
+    }
+
 
     private fun updateUI(){
         titleField.setText(workout.title)
